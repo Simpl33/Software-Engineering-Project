@@ -36,6 +36,10 @@ public class moveValidator{
         if (isCaptureMove(move, piece, board)){
             return true;
         }
+        //check if normal one square move is valid
+        if (isSimpleMove(move, piece)){
+            return true;
+        }
 
         return false;
     }
@@ -94,10 +98,10 @@ public class moveValidator{
     }
     
     public boolean isCorrectDirection(Piece piece, int rowChange){
-        if (piece.getColor().equals("RED")){
+        if (piece.getColor().equals("red")){
             return rowChange > 0;
         }
-        if (piece.getColor().equals("Black")){
+        if (piece.getColor().equals("black")){
             return rowChange < 0;
         }
 
