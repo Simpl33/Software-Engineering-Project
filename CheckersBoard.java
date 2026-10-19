@@ -16,13 +16,12 @@ public class CheckersBoard {
         // loops through the first 3 rows for the black pieces
         for (int row = 0; row < 3; row++) {
 
-            // loops through all 8 columns in each row
+            
             for (int col = 0; col < 8; col++) {
 
                 // only places a piece on the alternating playable squares
                 if ((row + col) % 2 == 1) {
 
-                    // creates a new black piece and puts it in this board position
                     board[row][col] = new Piece("black");
                 }
             }
@@ -31,13 +30,13 @@ public class CheckersBoard {
         // loops through the last 3 rows for the red pieces
         for (int row = 5; row < 8; row++) {
 
-            // loops through all 8 columns in each row
+            
             for (int col = 0; col < 8; col++) {
 
                 // only places a piece on the alternating playable squares
                 if ((row + col) % 2 == 1) {
 
-                    // creates a new red piece and puts it in this board position
+                    
                     board[row][col] = new Piece("red");
                 }
             }
