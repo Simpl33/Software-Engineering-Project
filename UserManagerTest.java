@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserManagerTest {
 
-    @Test
     // tests the registerUser method of UserManager
+    @Test    
     public void testRegisterUser() {
         UserManager userManager = new UserManager();
         boolean result = userManager.registerUser("username", "email", "password");
@@ -14,8 +14,8 @@ public class UserManagerTest {
         assertTrue(result);
     }
 
-    @Test
     // tests the duplicate user registration functionality
+    @Test    
     public void testDuplicateUser() {
         UserManager userManager = new UserManager();
 
@@ -26,8 +26,8 @@ public class UserManagerTest {
         assertFalse(result);
     }
 
-    @Test
     // tests the loginUser method of UserManager
+    @Test    
     public void testLoginUser() {
         UserManager userManager = new UserManager();
 
@@ -38,8 +38,8 @@ public class UserManagerTest {
         assertNotNull(loggedInUser);
     }
 
-    @Test
     // tests the invalid login functionality
+    @Test    
     public void testInvalidLogin() {
         UserManager userManager = new UserManager();
 
@@ -50,8 +50,8 @@ public class UserManagerTest {
         assertNull(loggedInUser);
     }
 
-    @Test
-    // tests the logoutUser method of UserManager
+    // tests the getCurrentUser method of UserManager
+    @Test    
     public void testLogoutUser() {
         UserManager userManager = new UserManager();
 
