@@ -12,6 +12,7 @@ public class moveValidator{
 
         //making sure the locations are on the board
         if (!board.isInsideBoard(startRow, startCol) || !board.isInsideBoard(endRow, endCol)){
+            System.out.println("Outside board");
             return false;
         } 
 
@@ -19,16 +20,19 @@ public class moveValidator{
         Piece piece = board.getPiece(startRow, startCol);
 
         if (piece == null){
+            System.out.println("no piece");
             return false;
         }
 
         //checks to see if the piece belongs to the current player
         if (!piece.getColor().equals(curentPlayer)){
+            System.out.println("Wrong player");
             return false;
         }
 
         //checks to see if the ending square is empty
         if (board.getPiece(endRow, endCol) != null){
+            System.out.println("Space filled");
             return false;
         }
 
@@ -37,19 +41,25 @@ public class moveValidator{
             return true;
         }
         //check if normal one square move is valid
-        if (isSimpleMove(move, piece)){
+        if (isSimpleMove(move, piece, board, curentPlayer)){
             return true;
         }
 
         return false;
     }
 
-    public boolean isSimpleMove(Move move, Piece piece){
-        int rowChange = move.getEndRow() - move.getStartRow();
+    public boolean isSimpleMove(Move move, Piece piece, CheckersBoard board, String currentPlayer){
+        int rowChange = move.getStartRow() - move.getEndRow();
         int colChange = move.getEndCol() - move.getStartCol();
+
+        // Checks if their is a capture avaliable for the current player
+        if(anyCaptureAvailable(currentPlayer, board)){
+            return false;
+        }
 
         //move must only be exactly one column diagonally
         if (Math.abs(colChange) != 1){
+            System.out.println("ColChange error");
             return false;
         }
 
@@ -63,7 +73,7 @@ public class moveValidator{
     }
 
     public boolean isCaptureMove(Move move, Piece piece, CheckersBoard board){
-        int rowChange = move.getEndRow() - move.getStartRow();
+        int rowChange = move.getStartRow() - move.getEndRow();
         int colChange = move.getEndCol() - move.getStartCol();
 
         //capture move moves exactly 2 rows and columns
@@ -79,7 +89,7 @@ public class moveValidator{
         }
 
         //find the square that was jumped over
-        int middleRow = (move.getStartRow() + move.getEndRow()) / 2;
+        int middleRow = (move.getEndRow() + move.getStartRow()) / 2;
         int middleCol = (move.getStartCol() + move.getEndCol()) / 2;
 
         Piece jumpedPiece = board.getPiece(middleRow, middleCol);
@@ -94,6 +104,8 @@ public class moveValidator{
             return false;
         }
 
+
+
         return true;
     }
     
@@ -102,15 +114,34 @@ public class moveValidator{
             return rowChange > 0;
         }
         if (piece.getColor().equals("black")){
+            System.out.println("Test");
             return rowChange < 0;
         }
-
+        
+        
         return false;
 
     }
 
     public boolean canKingMove(Piece piece){
         return piece.isKing();
+    }
+
+    public boolean anyCaptureAvailable(String currentPlayer, CheckersBoard board){
+        for(int row = 0; row < 8; row++){
+            for(int col = 0; col < 8; col++){
+                if (board.getPiece(row, col) != null){
+                    if(board.getPiece(row, col).getColor().equals(currentPlayer)){
+                        if(hasCaptureAvailable(board.getPiece(row, col), row, col, board)){
+                        return true;
+                        }
+                    } else {
+                    continue;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public boolean hasCaptureAvailable(Piece piece, int row, int col, CheckersBoard board){

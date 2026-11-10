@@ -71,12 +71,12 @@ public class CheckersApp extends Application {
     }
 
     // This method displays the game screen where the user can play Checkers. 
-    // It creates an instance of CheckersBoard and CheckersView, sets up a top bar with the 
+    // It creates an instance of CheckersGame and CheckersView, sets up a top bar with the 
     // player's username, buttons for starting a new game and logging out, and arranges the 
     // layout using a BorderPane.
     private void showGameScreen() {
-        CheckersBoard board = new CheckersBoard();
-        CheckersView view = new CheckersView(board);
+        CheckersGame game = new CheckersGame();
+        CheckersView view = new CheckersView(game);
 
         Label playerLabel = new Label("Player: " + userManager.getCurrentUser().getUsername());
 

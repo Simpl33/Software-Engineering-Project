@@ -1,18 +1,24 @@
-private class CheckersGame{
+public class CheckersGame {
 
     private CheckersBoard board;
-    private MoveValidator validator;
+    private moveValidator validator;
     private String currentPlayer;
+    private boolean firstClick;
     private boolean gameOver;
     private String winner;
+    private int startRow;
+    private int startCol;
 
     public CheckersGame() {
         board = new CheckersBoard();
-        validator = new MoveValidator();
+        validator = new moveValidator();
         
         currentPlayer = "black";
+        firstClick = true;
         gameOver = false;
         winner = null;
+        startRow = 0;
+        startCol = 0;
     }
 
     public boolean makeMove(Move move) {
@@ -23,7 +29,8 @@ private class CheckersGame{
 
         //check if the move follows the rules
 
-        if (!validator.isValidMove(move, board)) {
+        if (!validator.isValidMove(move, board, currentPlayer)) {
+            System.out.println("Fail!");
             return false;
         }
 
@@ -39,18 +46,25 @@ private class CheckersGame{
         //check if the new move is a capture
         boolean capture = validator.isCaptureMove(move, piece, board);
 
+        //move the piece
+        System.out.println("Success!");
+        board.movePiece(startRow, startCol, endRow, endCol);
+
         //if it is a capture, remove the piece
         if (capture) {
             int middleRow = (startRow + endRow) /2;
             int middleCol = (startCol + endCol) /2;
             board.removePiece(middleRow, middleCol);
-        }
 
-        //move the piece
-        board.movePiece(startRow, startCol, endRow, endCol);
+            // Checks to see if the current player can capture multiple pieces
+            if(validator.hasCaptureAvailable(board.getPiece(endRow, endCol), endRow, endCol, board)){
+                return true;
+            }
+        }
+        
 
         //check if the piece should be kinged
-        checkKing(piece, endRow);
+        checkForKing(piece, endRow);
 
         //check if someone won
         checkWin();
@@ -58,7 +72,7 @@ private class CheckersGame{
         //switch players only if the game is still running
         if (!gameOver) {
             switchTurn();
-    }
+        }
     return true;
     }
 
@@ -109,16 +123,33 @@ private class CheckersGame{
             winner = "red";
         }
 
-        public boolean isGameOver(){
-            return gameOver;
-        }
-
-        public String getWinner(){
-            return winner;
-        }
-
-        public CheckersBoard getBoard(){
-            return board;
-        }
+       
         
     }
+
+    public boolean isGameOver(){
+        return gameOver;
+    }
+
+    public String getWinner(){
+        return winner;
+    }
+
+    public CheckersBoard getBoard(){
+        return board;
+    }
+
+    
+    public void handlePieceClicked(Tile tile){
+        if (firstClick){
+            startRow = tile.getRow();
+            startCol = tile.getCol();
+            firstClick = false;
+        } else {
+            Move move = new Move(startRow, startCol, tile.getRow(), tile.getCol());
+            System.out.println(tile.getRow() + ", " + tile.getCol() );
+            this.makeMove(move);
+            firstClick = true;
+        }
+    }
+}

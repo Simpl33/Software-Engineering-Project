@@ -1,6 +1,5 @@
 // class that represents the checkerboard and keeps track of where the pieces are
 public class CheckersBoard {
-
     // 2D array that stores Piece objects in rows and columns
     private Piece[][] board;
 
@@ -64,11 +63,21 @@ public class CheckersBoard {
         board[startRow][startCol] = null;
 
         // returns true because the piece was moved
+        System.out.println("Success 2!");
         return true;
     }
 
     // removes a piece from the board by making that position empty
     public void removePiece(int row, int col) {
         board[row][col] = null;
+    }
+
+    // Checks if the row and col is inside the bounds of the board
+    public boolean isInsideBoard(int row,  int col) {
+        if(row < 8 && row >= 0 && col < 8 && col >= 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
