@@ -1,4 +1,4 @@
 .vscode/
 lib/
 bin/
-*.class
+*.classgit add .gitignore
